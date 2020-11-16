@@ -1,0 +1,91 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# publications-with-rmarkdown
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+This repository is equipped with `renv`
+
+1.  Make sure you have some sort of LaTeX distribution installed on your
+    computer. If you’ve ever successfully Knit an R Markdown document to
+    PDF, you should be fine. If you’re not sure, I recommend using
+    [`tinytex`](https://yihui.name/tinytex/).
+
+<!-- end list -->
+
+    install.packages('tinytex')
+    tinytex::install_tinytex()
+
+2.  Fork the clone to your machine, or just download the repo.
+
+3.  Open R and set your working directory of the cloned repository (or
+    just use RStudio projects)
+
+4.  This project is set up with
+    [`renv`](https://rstudio.github.io/renv/articles/renv.html) to
+    manage package dependencies. Inside R (and with your working
+    directory set correctly) run `renv::restore()`. E.g. if you stored
+    this repo in
+    `"/Users/danovan/projects/publications-with-rmarkdown"`, when you
+    type `getwd` in the R console you should see
+    `"/Users/danovan/projects/publications-with-rmarkdown"`. You will
+    run into some odd problems if your working directory is set to say
+    `"/Users/place-where-every-project-lives` and this project is just a
+    folder somewhere in that mess.
+
+Follow all prompts that come up after running `renv::restore()`. This
+will install the correct versions of all the packages needed to
+replicate our results. Packages are installed in a stand-alone project
+library for this project, and will not affect your installed R packages
+anywhere else.
+
+The preview version of RStudio has some neat [features for R
+Markdown](https://rstudio.com/products/rstudio/download/preview/). If
+you’d like to install it you can do so
+[here](https://rstudio.com/products/rstudio/download/preview/) but it’s
+not needed.
+
+# R Markdown for Publications
+
+A short presentation for Eco-Data-Science discussing solutions to some
+specific issues with using R Markdown for scientific publication.
+
+There are countless great R Markdown materials out there,
+e.g. [Markdown: The Definitive
+Guide](https://bookdown.org/yihui/rmarkdown/). However, weird as it may
+seem, we in academia are not the primary user for R Markdown\! I’ve
+found as a result that almost all of the materials out there are geared
+towards more industry / informal sharing of documents. There aren’t a
+lot of resources dealing with all the specific issues though of getting
+your work into the arcane requirements of the Academic Journal of
+Scientific Seriousness.
+
+The goal of this talk is to walk you through how to use R Markdown for
+the specific task of academic publications.
+
+***This is not an intro to R Markdown: I will assume that you know how
+to do the basics in R Markdown***
+
+1.  Why R Markdown for Scientific Publications (and
+    dissertations/theses\!)
+
+2.  A quick discussion of
+    [`rticles`](https://github.com/rstudio/rticles)
+
+3.  Formatting References
+
+4.  Cross-referencing
+    
+      - Figures, tables, equations, sections
+
+5.  Workflow
+    
+      - Updating results
+      - Collaborating\! i.e. what to do without track changes
+
+6.  If time permits, a quick tour of the
+    [`gauchodown`](https://github.com/DanOvando/gauchodown) template for
+    UCSB dissertations/theses

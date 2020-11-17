@@ -3,6 +3,9 @@
 
 # Publications with R Markdown
 
+You can view the presentation for this material
+[here](https://danovando.github.io/publications-with-rmarkdown/presentations/pubs-with-rmarkdown)
+
 <!-- badges: start -->
 
 <!-- badges: end -->

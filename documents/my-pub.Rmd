@@ -1,0 +1,130 @@
+---
+title: "My Excellent Research"
+author: 
+  - Dan Ovando
+  - Daniel Ovando
+date: "`r Sys.Date()`"
+output:
+  bookdown::word_document2:
+    reference_docx: word-template.docx
+  bookdown::pdf_document2:
+    keep_tex: true
+    includes: 
+      in_header: "my-pub-header.tex"
+  bookdown::html_document2: default
+linkcolor: blue
+always_allow_html: true
+---
+
+```{r setup, echo=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(palmerpenguins)
+library(knitr)
+library(kableExtra)
+library(flextable)
+```
+
+# Introduction
+
+We found some cool stuff (Fig.\@ref(fig:main-fig))
+
+```{r main-fig, fig.cap="Our Main Results"}
+
+plot(1:10)
+```
+
+Here are some penguins (Table.\@ref(tab:pen-tab))
+
+```{r pen-tab}
+
+knitr::kable(head(penguins), caption = "Here are some penguins", 
+             booktabs = FALSE, 
+             longtable = FALSE, 
+             format = "pipe") %>% 
+  kableExtra::kable_styling(latex_options = "striped")
+
+
+```
+
+
+
+Here is a manual table, Tab.\@ref(tab:simple-table). 
+
+\newpage
+
+This is a manual  table (Table.\@ref(tab:simple-table))
+
+| Thing 1 | Thing 2 | Col3 |
+|---------|---------|------|
+| A       | B       | C    |
+| D       | E       | F    |
+| G       | H       | I    |
+Table:(\#tab:simple-table) Caption for a Manual Table
+
+
+
+Here is a flipper model (Table.\@ref(tab:flipper-model))
+
+```{r flipper-model}
+
+mod <- lm(flipper_length_mm ~ island, data = penguins)
+
+
+modelsummary::modelsummary(list("Flipper Model" = mod), stars = TRUE,
+                           title = "My flipper model", 
+                           output = "flextable")
+```
+
+
+As you can see in Equation.\@ref(eq:binom)
+
+\begin{equation} 
+  f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
+  (\#eq:binom)
+\end{equation} 
+
+\newpage
+# Supplementary Materials
+
+
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\setcounter{figure}{0}
+
+\renewcommand{\thetable}{S\arabic{table}}
+
+\setcounter{table}{0}
+
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\setcounter{equation}{0}
+
+Here are our Supplementary materials... 
+
+
+Here is another flipper model (Table.\@ref(tab:si-flipper-model))
+
+```{r si-flipper-model}
+
+mod <- lm(flipper_length_mm ~ island + species, data = penguins)
+
+
+modelsummary::modelsummary(list("SI Flipper Model" = mod), stars = TRUE,
+                           title = "My SI flipper model",
+                           output = "flextable")
+```
+
+
+As you can see in Equation.\@ref(eq:binom2)
+
+\begin{equation} 
+  f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
+  (\#eq:binom2)
+\end{equation} 
+
+\newpage
+```{r, child = "appendix.Rmd"}
+
+```
+
+

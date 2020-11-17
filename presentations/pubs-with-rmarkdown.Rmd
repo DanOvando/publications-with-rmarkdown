@@ -6,12 +6,30 @@ institute: "University of Washington"
 date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
+    css: xaringan-themer.css
     lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(palmerpenguins)
+library(here)
+library(modelsummary)
+library(extrafont)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+library(showtext)
+style_duo_accent(
+ primary_color = "#035AA6", secondary_color = "#03A696"
+)
+```
 
 
 class: center, middle
@@ -24,35 +42,843 @@ class: center, middle
 
 # Why R Markdown for Academics?
 
+.small[
+- Reproducibility!
+  - Copy and pasting figures and tables from even the most reproducible workflow carries risks
+
+- Citations
+  - Seriously, is there anything worse than reference formatting?
+  
+- Making things look nice
+  - Automating formatting makes life a lot easier than manually messing with margins by hand 
+
+- Collaboration
+  - Trickier, but safer, way to incorporate edits across multiple authors
+]
+
+---
+
+# Why Not R Markdown for Academics?
+
+- Collaboration can be tricky
+  
+  - I honestly think it's easier than merging "finalFinalv10-oct2020-NEW_DANSEDITS.docx"
+  
+  - But it does require comfort with general version control practices, as well as R Markdown formatting
+  
+  - Probably not the best strategy for a 40 author literature review
+  
+- Journals can have **very** finicky requirements
+
+  - We'll talk about solutions to this, but sometimes the cure is worse than the bug
+  
+  - Don't wait until the night before it's due to make sure that you can get things in the format needed for your journal / dissertation!
 
 ---
 
 # A Quick Note on `rticles`
 
+The [`rticles`](https://github.com/rstudio/rticles) package seems like a great tool, providing R Markdown templates for a solid and growing number of journals. 
+
+We're not going to spend this meeting on it. I would definitely recommend that you check it out and see if it fits your needs. 
+  - But be warned, it's very "boutique"
+    - Every contribution reflects a particular author's take on how to implement the template via R Markdown.
+    - If you get 95% there then hit a wall, it's hard to switch to another format
+
+We're going to focus on some nuts and bolts, and learning how to format things without depending on `rticles`
+
+
+---
+
+# Formats
+
+We'll come back to this a bit later but for today I'm going to 
+
+- Focus on knitting to PDF
+
+- Touch on knitting to Word (works but *caveat emptor*)
+
+- Ignore knitting to HTML
+  - By far the most supported online
+  - Someday we may be allowed to write papers in HTML, but for now, critically important that our figures look nice when printed to the hypothetical sheet of paper that no one uses anymore 🙄
+
+---
+
+# bookdown
+
+I'm going to be using the [`bookdown`](https://bookdown.org/yihui/bookdown/) package exclusively here, since it has a bunch of cross-referencing and formatting tools that are critical for academic publishing. 
+
+This looks like 
+
+```yaml
+---
+title: "My Excellent Research"
+author: 
+  - Dan Ovando
+  - Daniel Ovando
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2: default
+  bookdown::word_document2: default
+  bookdown::html_document2: default
+linkcolor: blue
+---
+```
+
+The `linkcolor` thing there ensure that you see Fig.<span style="color: blue;">1</span>, instead of Fig.1
+
+Many of the things we look at today **will not work** unless you use bookdown
 
 ---
 
 # Citations
+
+I think citations might be my favorite thing about papers in R Markdown, and why I've started using it for all my papers where co-author needs allow, even non-quantitative ones
+
+- Automatically format citations for whatever journal you submit to
+
+- Automatically deal with in-text vs. in-paraentheses citations
+
+- Automatically format and update references / bibliography
+
+- No more "your zotero references are no longer linked"
+
+
+
+---
+
+# Citations
+## Importing References
+
+The first step is to get your references into a format that R Markdown can deal with. 
+
+The simplest way to do this is to generate a .bib file
+
+I do this by exporting my bibliography from [zotero](https://www.zotero.org/) as a .bib using [better bibtex](https://retorque.re/zotero-better-bibtex/)
+
+**All references you want to cite need to be in your .bib, but but you can include references you don't cite**
+
+  - I'm lazy so frequently export my entire zotero library
+  
+Your .bib file has entries for each potential citation containing all the information that R Markdown needs to format the citation and reference
+
+---
+
+# Citations
+## Importing References
+
+```
+example .bib entry
+```
+
+---
+
+# Citations
+## Formatting
+
+
+Citations are easy!
+
+```
+Fishes are delicious [@seal2020;@cat1400]
+```
+
+Will automatically format and order the references based on the journal requirements
+
+
+```
+As shown by @seal2020, fishes are delicious
+```
+
+Will automatically render to "As shown by Seal (2020)" or whatever the right format is
+
+---
+
+# Citations
+## Formatting
+
+An important note: this `@seal2020` format uses citekeys. 
+
+**the exact formatting of citekeys is defined by your reference manager settings**
+
+I have mine set as lowercase first author last name followed by date, with letters for conflicts (e.g. `[@seal2020a;@seal2020b]` since that annoying seal published like crazy) 
+
+But, this could be uppercase first author last name followed by date, title then date, whatever. So, if multiple authors are contributing to the .bib make sure that this is consistent, and remember that if you change settings and re-export your .bib things might break. 
+
+
+---
+
+# Citations
+## Example
+
+
+
+Demonstrate generating and saving a .bib file from zotero (sorry users of other platforms, you're on your own here!)
+
+---
+
+
+# Citations
+## References / Bibliography / Works Cited
+
+Seriously, does anyone know the difference?
+
+R Markdown automatically formats and creates the bibliography by default at the end of the document. 
+
+So, just end your .Rmd with 
+
+```
+# References
+
+```
+
+
+---
+
+
+# Citations
+## References / Bibliograph / Works Cited
+
+Suppose though that you want your bibliography in a specific place (e.g. before Supplementary Materials)
+
+```
+# References
+<div id="refs"></div>
+
+# Supplementary Materials
+```
 
 
 ---
 
 # Cross-Referencing
 
+Writing a paper in R Markdown means no more "replace all instances of Fig.1 with Fig.2 because Reviewer #2 insisted those figures be switched"
+
+R Markdown lets you automatically number and cross-reference figures, tables, equations, and text sections
+
+All cross referencing works about the same: typing `\@ref(ref-type:chunk-name)` produces a linked number to the referenced object. 
+
+`\@ref(fig:my-plot)`
+
+`\@ref(tab:my-table)`
+
+`\@ref(eq:my-equation)`
+
+`\@ref(my-section)` (exception to the rule here)
+
 
 ---
 
+# Cross-Referencing
+## Figures
+
+
+````
+We found some cool stuff (Fig.\@ref(fig:main-fig))
+`r ''````{r main-fig, fig.cap = "Our Main Results"}
+plot(1:10)
+```
+````
+
+Would produce something like
+
+We found some cool stuff (Fig.1)
+
+```{r, echo=FALSE, out.width="20%"}
+plot(1:10)
+```
+*Figure 1. Our Main Results*
+
+---
+
+# Cross-Referencing
+## Figures
+
+- You need to name your chunks with a valid name (bookdown will yell at you if you try and knit with an invalid name)
+
+- Each named chunk must be unique
+    - You can't name every chunk "figure"
+
+- You need to include `fig.cap = "something"` to trigger the generation of captions (I think)
+
+- Numbering is set by ordering of *chunks*, not ordering of *references*
+    - e.g. if the 1st figure you cross reference is in the 2nd figure chunk, it will show up as Fig.2
+
+---
+
+# Cross-Referencing
+## Tables
+
+The easiest way to do tables is with `knitr::kable`
+
+````
+Here are some penguins (Table.\@ref(tab:pen-tab))
+
+`r ''````{r pen-tab}
+
+knitr::kable(head(penguins), caption = "Here be penguins", booktabs = TRUE) %>% 
+  kableExtra::kable_styling(latex_options = "striped")
+
+```
+````
+
+Along with some help from the `kableExtra` package to make things look nice. Rendering this in `xaringan` is more trouble than it's worth, so take a look at the  documents/my-pub.Rmd
+
+Notice that I've included the caption in the actual `kable` call, instead of in the chunk options like we did with figures
+
+
+
+---
+
+
+# Cross-Referencing
+## Simple Tables
+
+Sometimes you don't want to go through all the trouble of creating a dataframe to convert into a table. 
+
+R Markdown allows you to "manually" create tables as well. Here's how to caption those
+
+```
+
+This is a manual  table (Table.\@ref(tab:simple-table))
+
+| Thing 1 | Thing 2 | Col3 |
+|---------|---------|------|
+| A       | B       | C    |
+| D       | E       | F    |
+| G       | H       | I    |
+Table:(\#tab:simple-table) A Manual Table
+```
+
+
+---
+
+
+# Cross-Referencing
+## Regression Tables
+
+Regression tables are another popular thing. 
+
+There are **lots** of options out there, I really like [`modelsummary`](https://vincentarelbundock.github.io/modelsummary/) for standard regression tables
+
+Notice that now the caption goes in the title. Fun with open source 🙄! 
+
+````
+Here is a flipper model (Table.\@ref(tab:flipper-model))
+
+`r ''````{r flipper-model}
+
+mod <- lm(flipper_length_mm ~ island, data = penguins)
+
+modelsummary::modelsummary(list("Flipper Model" = mod), stars = TRUE,
+                           title = "My flipper model" )
+
+```
+````
+
+---
+
+
+# Cross-Referencing
+## Equations
+
+OK, we've covered references, figures, and tables, what about equations. 
+
+Equations have a few fincky things, see bookdown instructions [here](https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html#equations)
+
+```
+As you can see in Equation.\@ref(eq:binom)
+
+\begin{equation} 
+  f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
+  (\#eq:binom)
+\end{equation} 
+```
+
+---
 
 # Supplementary Materials
 
+Supplementary materials / Supporting Information / Online Appendix (seriously, get it together academic) can be a pain. 
+
+Journals often want you to append "S" to everything, restart figure numbering etc (e.g. Figure S1)
+
+Here's how!
+
+```
+ # Supplementary Materials
+
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\setcounter{figure}{0}
+
+\renewcommand{\thetable}{S\arabic{table}}
+
+\setcounter{table}{0}
+
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\setcounter{equation}{0}
+
+Here are our Supplementary materials... 
+
+```
+
 ---
 
-# Knit Child
+# Supplementary Materials
+## Knit Child
+
+The above example, combined with the trick I showed you to manually create the reference section, can make it easy to insert small supporting information right after your main references. 
+
+But, if you have a massive SI, with lots of references, it might be nice to put them in a separate document. This is where `knitr::knit_child` comes in: It allows us to write another section, say an Appendix, in a separate markdown document, and then include the output in this document. 
+
+The results of this "child" document will be knit into the main document!
+
+````
+`r ''````{r, child = "appendix.Rmd"}
+
+```
+````
+
+
+---
+
+# Fine-Tuning Formatting
+
+So far, we've covered a lot of the nuts and bolts. 
+
+Publications should look good too though! And sometimes, journals have specific formatting requirements. 
+
+IMO, the default bookdown LaTeX template looks pretty good, certainly better than the average Word document. 
+
+But, let's talk a bit about fine tuning. Generally: 
+
+1. If you are submitting to a journal with strict and tricky formatting requirements, check out [`rticles`](https://github.com/rstudio/rticles) before trying to do things yourself
+
+2. Don't google "how do I do XX in R Markdown?"!
+  - If you're knitting to PDF,  "how do I do XX in LaTeX?"
+  - Same applies to HTML (Word is a different beast)
+
+---
+
+# Fine-Tuning PDF Formatting
+
+Remember, R Markdown is basically a front end, uses `knitr` to translate things into the "right" format, e.g. LaTeX. 
+
+A nice feature of this is that you can usually just directly include LaTeX/HTML commands directly into your .Rmd!
+
+```
+\renewcommand{\thefigure}{S\arabic{figure}}
+```
+
+Isn't R Markdown, it's LaTeX, but I can just put it directly in my .Rmd! 
+
+The only caveat here, is that these kinds of language-specific inserts usually only work for the language they are in: This command doesn't doesn't cause any errors when knitting to HTML, it just doesn't do what we want. 
+
+Same (sometimes) goes for HTML, though more often an HTML trick will work in LaTeX but a LaTeX trick will not work for HTML
+
+.center[Fine tuning for say LaTeX usually means things won't look quite as good on HTML, and *vice versa*]
+
+---
+
+# Fine-Tuning Formatting
+## Knitting to PDF
+
+I just insert little snippets of LaTeX when knitting to PDF and I need some little LaTeX thing (like a watermark). 
+
+Say  you've got a more complicated problem though, and you really want to do LOTS of complicated LaTeX formatting. 
+
+At this point, you're increasingly just working in LaTeX. That's waaaay beyond what we have time for today, but you can check out some great resources for LaTeX in R Markdown [here](https://bookdown.org/yihui/rmarkdown-cookbook/latex-output.html)
+
+I'll try and cover a few things here
+
+---
+
+# Fine-Tuning Formatting
+## Knitting to PDF
+
+LaTeX documents have a "preamble" section where you typically load packages, set options etc. 
+
+This is where you would for example load a package to add in line numbers, or include a watermark. 
+
+I use this area for making kind of "one line at a time" changes to my PDF documents
+
+To see this, we'll add commands to double space and add line numbers to our document in the file "documents/my-pub-header.tex"
+```
+\usepackage{setspace}\doublespacing
+\usepackage{lineno}\linenumbers
+```
+
+---
+
+# Fine-Tuning Formatting
+## Knitting to PDF
+
+We'll then load this .tex file into our preamble using the YAML
+
+
+```yaml
+---
+title: "My Excellent Research"
+author: 
+  - Dan Ovando
+  - Daniel Ovando
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    includes: 
+      in_header: "my-pub-header.tex"
+linkcolor: blue
+---
+```
+
+---
+
+
+# Fine-Tuning Formatting
+## Knitting to PDF
+
+I'll use the `in_header` trick to do simple things like line numbers. But, suppose you have a more complicated need, and want to make your document look exactly like a PNAS article, or need it to conform to University guidelines. 
+
+For that you'll need a LaTeX template. At this point, things are getting complicated. As far as I can tell, if you can figure out how to do it in LaTeX, you can do it in R Markdown, but there's no guarantee: you're adding in a translation step. 
+
+.center[**Before committing to using R Markdown for a project with *really* complicated formatting, take time to make sure you can actually achieve it. Going backwards can be hard**<sup>1</sup>]
+
+.footnote[[1] Don't wait until the night your dissertation is due to hit `knit` for the first time!!!]
+
+---
+
+# Fine-Tuning Formatting
+## Custom LaTeX Templates
+
+I'll be blunt: getting into templates is hard. I personally would rather debug 1,000 lines of someone else's C++ code than 10 lines of LaTeX templates. 
+
+My plan was to show you all how to manually use a template, and I couldn't get it to work well without resorting to building an installable template. 
+
+If you have Jedi-level LaTeX skills, this might be easy for you, but otherwise dealing with templates is NOT EASY. This is why packages like `rticles` are great: someone has done all the work. 
+
+This is also why they are tough: it can be really hard to modify things. 
+
+So for now, take it that it can be done, and if you REALLY need a template that isn't in something like `rticles`, think carefully if you're up for the challenge. 
+
+
+---
+
+
+# Fine-Tuning Formatting
+## Word
+
+Automating things looking great going from .Rmd -> Word is hard. 
+
+You can set up a Word document template to knit to, which will take care of things like fonts, headers, line spacing, etc. 
+
+But, check your results carefully!
+
+```yaml
+---
+title: "My Excellent Research"
+author: Dan Ovando
+output:
+  bookdown::word_document2:
+    reference_docx: word-template.docx
+linkcolor: blue
+---
+```
+
+---
+
+# Fine-Tuning Formatting
+## Word
+
+My advice for knitting to word: Keep it simple in the R Markdown
+
+- Use bookdown::word_document2
+
+Don't get fancy with other things: accept that you're doing to most of your "make it look good" manually in Word. 
+
+Tables are *really* finicky, mess around with the "output"/"format" options of whatever you are using for tables to try and get them to look right
+  - But it can be done and looks good!
+---
+
+
+# Submitting to Journals
+
+This is very journal-specific
+
+1. Some will let you just upload PDFs
+
+2. Follow the Word + manual futzing route
+
+3. Use `keep_tex: true` in the YAML!
+
+
+```yaml
+---
+title: "My Excellent Research"
+author: 
+  - Dan Ovando
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    keep_tex: true
+linkcolor: blue
+---
+```
+
+---
+
+# Submitting to Journals
+
+3. Use `keep_tex: true` in the YAML!
+
+This will generate and store all the files you need to render your paper as a PDF from the .tex file
+
+If the journal lets people submit .tex files, you should be fine!
+
+But, keep in mind that this .tex file is automatically generated so is even more confusing than the average .tex file
+
+If they want you (not them) to do a bunch of formatting (e.g. if they say LaTeX users must use a specific template) easiest to see if it's in `rticles`: you almost certainly won't be able to successfully do major edits to the generated .tex file by hand
+
+---
+
+# Otter Break!
+
+
+.center[
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/K4Img8Mxa-I?start=11" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+]
+
+---
+
+# A Reproducible Workflow
+
+So far, we've covered a lot of tricks to accomplish academic-specific tasks in R Markdown. 
+
+Let's talk about how to integrate R Markdown into the rest of your workflow. 
+
+There are generally two options here
+
+1. Write the entire thing in R Markdown
+
+I find this works great for simple self-contained projects, but personally find it cumbersome when things get complicated
+  - no one wants to parts through a 10,000 line chunk
+  - Code separated by narrative text that isn't just explaining the code can be harder to read IMO
+
+2. Use a separate R script combined with parameterized reports
+
+This is my preferred workflow, and what I'll demonstrate here
+
+---
+
+# A Reproducible Workflow
+
+The goal: any user can run something like "make-my-paper.R" and by running that script and only that script reproduce your final publication
+
+This depends on some project-oriented coding skills that we don't have time to cover, but see presentation and links [here](https://danovando.github.io/reproducible-workflow/presentations/reproducibility-101#1)
+
+1. Have make-my-pub.R run your analysis, and save all your results in a user-specified folder (e.g. results/v1.0)
+
+2. Setup your my-pub.Rmd to take as a parameter the results folder to read
+
+3. Load results inside my-pub.Rmd, incorporate into paper
+
+
+---
+
+
+# A Reproducible Workflow
+
+1. Have make-my-pub.R run your analysis, and save all your results in a user-specified folder (e.g. results/v1.0)
+  - I usually save clearly named summary tables of results, as well as all my plots in a .Rdata object called "plots.Rdata" or something like that
+  
+```r
+plots <- ls()[str_detect(ls(), "_plot")]
+
+save(file = file.path(run_dir, "plots.RData"), list = plots)
+```
+
+2. Setup your my-pub.Rmd to take as a parameter the results folder to read
+
+3. Load results inside my-pub.Rmd, incorporate into paper
 
 
 ---
 
 # A Reproducible Workflow
+
+Setup your my-pub.Rmd to take as a parameter the results folder to read
+
+Load results
+
+````
+---
+title: "My Excellent Research"
+author:  Dan Ovando
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2: default
+linkcolor: blue
+params:
+  run_name: ["v6.0"]
+---
+
+
+`r ''````{r setup}
+
+run_dir <- here::here("results", params$run_name)
+
+load(file = file.path(run_dir,"plots.RData"))
+
+
+```
+````
+
+
+````
+
+`r ''``
+
+```
+````
+---
+
+# A Reproducible Workflow
+
+Now that your.Rmd is parameterized, you can actually tell R to knit your report from your make-my-pub.R file!
+
+```r
+output_format = c(
+  "bookdown::html_document2",
+  "bookdown::pdf_document2",
+  "bookdown::word_document2"
+)
+
+rmarkdown::render(
+  here::here("documents", "my-pub.Rmd"),
+  params = list(results_name = results_name),
+  output_format = output_format,
+  output_dir = results_path # put the reports in the results directory
+)
+```
+
+---
+
+# A Reproducible Workflow
+
+
+Look through make-my-pub.R to see how this all works and give it a try. 
+
+---
+
+
+# Collarboration - The Final Frontier
+
+OK, you now have a .Rmd file that will automatically update your results 
+
+---
+
+# Collarboration - The Final Frontier
+
+.pull-left[
+
+  OK, you now have a .Rmd file that will
+  
+  1. Format citations
+  2. Deal with cross-references
+  3. Update all your results, figures, tables automatically
+  
+  But now, your co-authors have edits... 
+].pull-right[
+
+```{r out.width = '75%', echo = FALSE}
+knitr::include_graphics("http://swcarpentry.github.io/git-novice/fig/phd101212s.png") 
+```
+]
+
+
+---
+
+# Collarboration - The Final Frontier
+
+This is the hardest part about working in .Rmd
+
+You have three options
+
+1. Knit to word / PDF, have coauthors annotate changes, manually pull those changes into the .RMd
+  - Least elegant, maybe best if edits are minimal and coauthors aren't about to start using R Markdown
+
+2. Explore something like [`redoc`](https://github.com/noamross/redoc)
+  - Looks interesting, but suspended for the moment, I wouldn't count on it until further notice
+  
+3. git + GitHub!
+
+
+---
+
+# Collaboration
+## Editing R Markdown with GitHub
+
+1. Co-author creates a branch off of the main branch
+  - dans-edits or something like that
+  - For really minor changes, fine to just work off the main branch
+  - But, if you have many coauthors, don't let this be a habit, it will bite you
+
+2. Co-author edits the .Rmd directly, commits, pulls, and pushes changes to GitHub
+
+3. Once done with edits, co-author submits pull request to merge into main branch
+
+4. Author / admin reviews pull request and accepts / rejects as needed, and resolve any conflicts
+
+5. Repeat process for each coauthor
+
+---
+
+# Collaboration
+## Editing R Markdown with GitHub
+
+This sounds hard! But...
+
+1. No more juggling multiple email versions of the document where half of coauthors edited on top of another, but the other half accidentally edited over a version you emailed three months ago. 
+
+2. Any conflicts are made clear and can be resolved in the pull request
+
+3. If it all goes to hell, just don't merge the pull request!
+
+If coauthors aren't comfortable with all the fun of git & GitHub, they can also make changes and submit a pull request [directly from GitHub](https://docs.github.com/en/free-pro-team@latest/github/managing-files-in-a-repository/editing-files-in-your-repository)!
+
+---
+
+
+# Collaboration
+## Editing R Markdown with GitHub
+
+Practice session collaboratively editing a .Rmd file 
+
+---
+
+
+# A Few Random Things
+
+You don't need RStudio to work with R Markdown! But, it has some nice features
+  - Spell check, visual editor is coming, and you can install things like word counters
+
+Depending on your system, you might run into some errors knitting to PDF if you have funky fonts in your plots / text. The [`extrafont`](https://github.com/wch/extrafont) package can help with that
+
+```{r, eval=FALSE}
+library(extrafont)
+extrafont::loadfonts()
+```
+
+Don't forget you can embed results directly in your text as R code, e.g. 
+```{markdown, eval = FALSE}
+The mean penguin weighs `r mean(penguins$body_mass_g, na.rm = TRUE) / 1000 * 2.204623` pounds will produce
+```
+
+The mean penguin weighs `r mean(penguins$body_mass_g, na.rm = TRUE) / 1000 * 2.204623` pounds
+
+Use `ggplot2::theme_set` to make all your plots look nice and consistent
 
 
 ---
@@ -60,8 +886,46 @@ class: center, middle
 
 # `gauchodown`
 
+[`gauchodown`](https://github.com/DanOvando/gauchodown) is an R package I adapted from Ben Marwick's [`huskydown`](https://github.com/benmarwick/huskydown) to write dissertations that comply with the [UCSB LaTeX dissertation template](http://www.graddiv.ucsb.edu/academic/Filing-Your-Thesis-Dissertation-DMA-Document) (at least as of 2018)
+
+I can attest that it passes formatting requirements, but be sure to test it out and get it evaluated well before its due if you decide to go that route!
+
+- Automating formatting of dissertation takes a massive time-sink off your plate (until the template breaks...)
+
+- Easily update all your results when you catch an error two days before your defense
+
+- Publish your results to a [shareable website](https://danovando.github.io/dissertation/) with one(ish) line of code!
+
+- Makes it much easier to come back to your work and get it ready for publication
+
+- But... if it breaks, Word is (mostly) easier to fix
+
+- **Make sure you have an editing plan in place with your committee** 
+    - Once it's in this format getting it into say Word may not be easy... 
 
 
 ---
 
+# Questions?
+
+.pull-left[
+email: danovan@uw.edu
+
+GitHub: [DanOvando](www.github.com/danovando)
+
+twitter: @danovand0
+
+website: [www.danovando.com](http://www.danovando.com)
+] .pull-right[
+
+## Go Write some Papers!
+```{r, echo = FALSE}
+
+knitr::include_graphics("https://media.giphy.com/media/XIqCQx02E1U9W/giphy.gif")
+```
+
+
+]
+
+---
 

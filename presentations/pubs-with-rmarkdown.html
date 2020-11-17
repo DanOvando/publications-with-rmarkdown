@@ -4,7 +4,7 @@
     <title>Academic Publications with R Markdown</title>
     <meta charset="utf-8" />
     <meta name="author" content="Dan Ovando" />
-    <meta name="date" content="2020-11-16" />
+    <meta name="date" content="2020-11-17" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 ## eco-data-science session
 ### Dan Ovando
 ### University of Washington
-### 2020-11-16
+### 2020-11-17
 
 ---
 
@@ -30,6 +30,14 @@ class: center, middle, inverse, title-slide
 class: center, middle
 # Why?
 ##*To help you close the final link in the reproducible-science chain by authoring papers and dissertations in R Markdown*
+
+
+---
+
+
+class: center, middle
+# Why?
+##*Also, to make your life easier!*
 
 
 ---
@@ -109,7 +117,7 @@ This looks like
 ---
 title: "My Excellent Research"
 author: Dan Ovando
-date: "2020-11-16"
+date: "2020-11-17"
 output:
   bookdown::pdf_document2: default
   bookdown::word_document2: default
@@ -207,7 +215,7 @@ An important note: this `@seal2020` format uses citekeys.
 
 **the exact formatting of citekeys is defined by your reference manager settings**
 
-I have mine set as lowercase first author last name followed by date, with letters for conflicts (e.g. `[@seal2020a;@seal2020b]` since that annoying seal published like crazy) 
+I have mine set as lowercase first author last name followed by date, with letters for conflicts (e.g. `[@seal2020a;@seal2020b]` since that annoying seal publishes like crazy) 
 
 But, this could be uppercase first author last name followed by date, title then date, whatever. So, if multiple authors are contributing to the .bib make sure that this is consistent, and remember that if you change settings and re-export your .bib things might break. 
 
@@ -224,7 +232,7 @@ You can download just about any csl file from zotero [here](https://www.zotero.o
 ---
 title: "My Excellent Research"
 author: Dan Ovando
-date: "2020-11-16"
+date: "2020-11-17"
 output:
   bookdown::pdf_document2:
     includes: 
@@ -551,7 +559,7 @@ title: "My Excellent Research"
 author: 
   - Dan Ovando
   - Daniel Ovando
-date: "2020-11-16"
+date: "2020-11-17"
 output:
   bookdown::pdf_document2:
     includes: 
@@ -600,6 +608,8 @@ Automating things looking great going from .Rmd -&gt; Word is hard.
 
 You can set up a Word document template to knit to, which will take care of things like fonts, headers, line spacing, etc. 
 
+There's nothing fancy about setting up a template: just make a .docx file that looks like you want, save it, and set it as the `reference_docx`
+
 But, check your results carefully!
 
 ```yaml
@@ -609,7 +619,6 @@ author: Dan Ovando
 output:
   bookdown::word_document2:
     reference_docx: word-template.docx
-linkcolor: blue
 ---
 ```
 
@@ -645,7 +654,7 @@ This is very journal-specific
 title: "My Excellent Research"
 author: 
   - Dan Ovando
-date: "2020-11-16"
+date: "2020-11-17"
 output:
   bookdown::pdf_document2:
     keep_tex: true
@@ -686,13 +695,13 @@ Let's talk about how to integrate R Markdown into the rest of your workflow.
 
 There are generally two options here
 
-1. Write the entire thing in R Markdown
+- Write the entire thing in R Markdown
 
 I find this works great for simple self-contained projects, but personally find it cumbersome when things get complicated
-  - no one wants to parts through a 10,000 line chunk
+  - no one wants to comb through a 10,000 line chunk
   - Code separated by narrative text that isn't just explaining the code can be harder to read IMO
 
-2. Use a separate R script combined with parameterized reports
+- Use a separate R script combined with parameterized reports
 
 This is my preferred workflow, and what I'll demonstrate here
 
@@ -742,7 +751,7 @@ Load results
 ---
 title: "My Excellent Research"
 author:  Dan Ovando
-date: "2020-11-16"
+date: "2020-11-17"
 output:
   bookdown::pdf_document2: default
 linkcolor: blue
@@ -798,13 +807,6 @@ Look through make-my-pub.R to see how this all works and give it a try.
 
 ---
 
-
-# Collarboration - The Final Frontier
-
-OK, you now have a .Rmd file that will automatically update your results 
-
----
-
 # Collarboration - The Final Frontier
 
 .pull-left[
@@ -818,7 +820,7 @@ OK, you now have a .Rmd file that will automatically update your results
   But now, your co-authors have edits... 
 ].pull-right[
 
-&lt;img src="http://swcarpentry.github.io/git-novice/fig/phd101212s.png" width="75%" /&gt;
+&lt;img src="http://swcarpentry.github.io/git-novice/fig/phd101212s.png" width="80%" /&gt;
 ]
 
 
@@ -828,7 +830,7 @@ OK, you now have a .Rmd file that will automatically update your results
 
 This is the hardest part about working in .Rmd
 
-You have three options
+You have ~4 options
 
 1. Knit to word / PDF, have coauthors annotate changes, manually pull those changes into the .RMd
   - Least elegant, maybe best if edits are minimal and coauthors aren't about to start using R Markdown
@@ -836,7 +838,9 @@ You have three options
 2. Explore something like [`redoc`](https://github.com/noamross/redoc)
   - Looks interesting, but suspended for the moment, I wouldn't count on it until further notice
   
-3. git + GitHub!
+3. Copy and paste into google docs, edit, then copy back
+  
+4. git + GitHub!
 
 
 ---

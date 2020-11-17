@@ -43,7 +43,7 @@ load(file.path(results_path, "penguin-models.Rdata"))
 
 # Introduction
 
-Penguins are pretty great. However, @keum2001 showed that both fat and imaginary penguins can "decay amplitudes in perturbative QCD picture". Since that sounds pretty bad, we should probably figure out what makes penguins fat, if not imaginary. The mean penguin weighs `r mean(penguins$body_mass_g, na.rm = TRUE) / 1000 * 2.204623` pounds. 
+Penguins are pretty great. Sort of, some people find them scary. However, @keum2001 showed that both fat and imaginary penguins can "decay amplitudes in perturbative QCD picture". Since that sounds pretty bad, we should probably figure out what makes penguins fat, if not imaginary. The mean penguin weighs `r mean(penguins$body_mass_g, na.rm = TRUE) / 1000 * 2.204623` pounds. 
 
 Male penguins tend to be fatter than female penguins, and it looks like Gentoo penguins on Biscoe island might be at serious risk of perturbing the QCD picture (Fig.\@ref(fig:weight-fig)) [@horst2020;@keum2001]. 
 

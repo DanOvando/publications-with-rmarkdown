@@ -113,9 +113,7 @@ This looks like
 ```yaml
 ---
 title: "My Excellent Research"
-author: 
-  - Dan Ovando
-  - Daniel Ovando
+author: Dan Ovando
 date: "`r Sys.Date()`"
 output:
   bookdown::pdf_document2: default
@@ -916,6 +914,15 @@ GitHub: [DanOvando](www.github.com/danovando)
 twitter: @danovand0
 
 website: [www.danovando.com](http://www.danovando.com)
+
+### Resources
+
+[`bookdown`](https://bookdown.org/yihui/bookdown/)
+
+[R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+
+[Happy Git & Github](https://happygitwithr.com/)
+
 ] .pull-right[
 
 ## Go Write some Papers!

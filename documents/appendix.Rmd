@@ -1,3 +1,8 @@
+---
+bibliography: pubs-in-rmarkdown.bib
+csl: fish-and-fisheries.csl
+---
+
 # Appendix
 
 
@@ -15,9 +20,11 @@
 
 This is an appendix
 
-As you can see in Equation.\@ref(eq:binom3)
+The appendix also has equations in it \@ref(eq:binom3), as well as a reference [@horst2020]
 
 \begin{equation} 
   f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
   (\#eq:binom3)
 \end{equation} 
+
+

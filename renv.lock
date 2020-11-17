@@ -218,6 +218,13 @@
       "Repository": "CRAN",
       "Hash": "2b7d10581cc730804e9ed178c8374bd6"
     },
+    "data.table": {
+      "Package": "data.table",
+      "Version": "1.13.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "907b184e0fd13bc19154a8f322920015"
+    },
     "desc": {
       "Package": "desc",
       "Version": "1.2.0",
@@ -302,6 +309,13 @@
       "Repository": "CRAN",
       "Hash": "83ab58a0518afe3d17e41da01af13b60"
     },
+    "flextable": {
+      "Package": "flextable",
+      "Version": "0.5.11",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a0c5428da5e33450805302fdac42b68c"
+    },
     "fs": {
       "Package": "fs",
       "Version": "1.5.0",
@@ -320,6 +334,13 @@
       "RemoteRef": "master",
       "RemoteSha": "d9a19b8c5ac10406ceca9b0b071ee788f8410f00",
       "Hash": "f8fcf652a1fb8fce3361149923ff3621"
+    },
+    "gdtools": {
+      "Package": "gdtools",
+      "Version": "0.2.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "38f4026c0d09edb3a4474685cef68342"
     },
     "generics": {
       "Package": "generics",
@@ -566,6 +587,13 @@
       "Repository": "CRAN",
       "Hash": "82e52d2c6e674764ffb122d084afa96b"
     },
+    "officer": {
+      "Package": "officer",
+      "Version": "0.3.15",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "261577cdfd9fd3d46f9a82d1ab321e21"
+    },
     "openssl": {
       "Package": "openssl",
       "Version": "1.4.3",
@@ -804,6 +832,20 @@
       "Repository": "CRAN",
       "Hash": "9ddfc91d4280eaa34c2103951538976f"
     },
+    "showtext": {
+      "Package": "showtext",
+      "Version": "0.9-1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f0f1f13305a0e27926df7caf42ae3cba"
+    },
+    "showtextdb": {
+      "Package": "showtextdb",
+      "Version": "3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c12e756cf947e58b0f2c2a520521a5a8"
+    },
     "sourcetools": {
       "Package": "sourcetools",
       "Version": "0.1.7",
@@ -838,6 +880,20 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "b227d13e29222b4574486cfcbde077fa"
+    },
+    "sysfonts": {
+      "Package": "sysfonts",
+      "Version": "0.8.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "7a1b6f0c5aba733dfe7c5edcb5b3a1e6"
+    },
+    "systemfonts": {
+      "Package": "systemfonts",
+      "Version": "0.3.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "046e821d454edb3722192f588f4d7884"
     },
     "tables": {
       "Package": "tables",
@@ -895,6 +951,13 @@
       "Repository": "CRAN",
       "Hash": "4a5081acfb7b81a572e4384a7aaf2af1"
     },
+    "uuid": {
+      "Package": "uuid",
+      "Version": "0.1-4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "e4169eb989a5d03ccb6b628cad1b1b50"
+    },
     "vctrs": {
       "Package": "vctrs",
       "Version": "0.3.4",
@@ -951,6 +1014,13 @@
       "Repository": "CRAN",
       "Hash": "5fdd151bfda7f52aa06471de764241f7"
     },
+    "xaringanthemer": {
+      "Package": "xaringanthemer",
+      "Version": "0.3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "402482b841f115baa6250a3fc49f802f"
+    },
     "xfun": {
       "Package": "xfun",
       "Version": "0.19",
@@ -985,6 +1055,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "2826c5d9efb0a88f657c7a679c7106db"
+    },
+    "zip": {
+      "Package": "zip",
+      "Version": "2.1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "3bc8405c637d988801ec5ea88372d0c2"
     }
   }
 }

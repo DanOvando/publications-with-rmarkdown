@@ -1,19 +1,23 @@
 ---
-title: "My Excellent Research"
+title: "What Makes Penguins Chonky"
 author: 
   - Dan Ovando
   - Daniel Ovando
 date: "`r Sys.Date()`"
 output:
-  bookdown::word_document2:
-    reference_docx: word-template.docx
   bookdown::pdf_document2:
     keep_tex: true
     includes: 
       in_header: "my-pub-header.tex"
+  bookdown::word_document2:
+    reference_docx: word-template.docx
   bookdown::html_document2: default
 linkcolor: blue
 always_allow_html: true
+params:
+  results_name: ["v1.0"]
+bibliography: pubs-in-rmarkdown.bib
+csl: fish-and-fisheries.csl
 ---
 
 ```{r setup, echo=FALSE, include=FALSE}
@@ -22,18 +26,39 @@ library(palmerpenguins)
 library(knitr)
 library(kableExtra)
 library(flextable)
+library(here)
+
+results_name <- params$results_name
+
+results_path <- here("results", results_name)
+
+# load results
+
+load(file.path(results_path, "penguin-plots.Rdata"))
+
+load(file.path(results_path, "penguin-models.Rdata"))
+
+
 ```
 
 # Introduction
 
-We found some cool stuff (Fig.\@ref(fig:main-fig))
+Penguins are pretty great. However, @keum2001 showed that both fat and imaginary penguins can "decay amplitudes in perturbative QCD picture". Since that sounds pretty bad, we should probably figure out what makes penguins fat, if not imaginary. The mean penguin weighs `r mean(penguins$body_mass_g, na.rm = TRUE) / 1000 * 2.204623` pounds. 
 
-```{r main-fig, fig.cap="Our Main Results"}
+Male penguins tend to be fatter than female penguins, and it looks like Gentoo penguins on Biscoe island might be at serious risk of perturbing the QCD picture (Fig.\@ref(fig:weight-fig)) [@horst2020;@keum2001]. 
 
-plot(1:10)
+```{r weight-fig, fig.cap="Distribution of penguin weight in grams by sex,species, and island."}
+
+weight_plot
 ```
 
-Here are some penguins (Table.\@ref(tab:pen-tab))
+But, it seems like bill length and flipper length matter too (Fig.\@ref(fig:weight-plot-2)). 
+
+```{r weight-plot-2, fig.cap = "Penguin body mass from @horst2020 as a function of bill length and flipper length"}
+weight_things_plot
+```
+
+For those that like tables, here's a table of some penguins (Table.\@ref(tab:pen-tab)). 
 
 ```{r pen-tab}
 
@@ -47,41 +72,46 @@ knitr::kable(head(penguins), caption = "Here are some penguins",
 ```
 
 
+# Methods
 
-Here is a manual table, Tab.\@ref(tab:simple-table). 
+Here are two models we tried (Tab.\@ref(tab:simple-table)). 
+
+
+| Model   | Abrev.  | Description |
+|---------|---------|------|
+| First   | A       | Islands!  |
+| Second  | B      | Flippers!  |
+Table:(\#tab:simple-table) Candidate models
 
 \newpage
+# Results
 
-This is a manual  table (Table.\@ref(tab:simple-table))
-
-| Thing 1 | Thing 2 | Col3 |
-|---------|---------|------|
-| A       | B       | C    |
-| D       | E       | F    |
-| G       | H       | I    |
-Table:(\#tab:simple-table) Caption for a Manual Table
-
-
-
-Here is a flipper model (Table.\@ref(tab:flipper-model))
+Here are our models (Table.\@ref(tab:flipper-model))
 
 ```{r flipper-model}
 
-mod <- lm(flipper_length_mm ~ island, data = penguins)
 
-
-modelsummary::modelsummary(list("Flipper Model" = mod), stars = TRUE,
-                           title = "My flipper model", 
-                           output = "flextable")
+modelsummary::modelsummary(list("A" = model_a,
+                                "B" = model_b), stars = TRUE,
+                           title = "Why are penguins fat?")
 ```
 
+# Discussion
 
-As you can see in Equation.\@ref(eq:binom)
+Looks like team flipper is a better model than team island.
+
+For future research, we might try and model some presence and absence data using the binomial function \@ref(eq:binom)
 
 \begin{equation} 
   f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
   (\#eq:binom)
 \end{equation} 
+
+If someone gives us a lot more funding we will also do some state-space modeling [@brooks2017], or some Bayesian stuff [@mcelreath2020]. 
+
+# References
+<div id="refs"></div>
+
 
 \newpage
 # Supplementary Materials
@@ -99,23 +129,22 @@ As you can see in Equation.\@ref(eq:binom)
 
 \setcounter{equation}{0}
 
-Here are our Supplementary materials... 
+Here are our Supplementary Materials
 
 
 Here is another flipper model (Table.\@ref(tab:si-flipper-model))
 
 ```{r si-flipper-model}
 
-mod <- lm(flipper_length_mm ~ island + species, data = penguins)
+mod <- lm(flipper_length_mm ~ island + species + sex, data = penguins)
 
 
 modelsummary::modelsummary(list("SI Flipper Model" = mod), stars = TRUE,
-                           title = "My SI flipper model",
-                           output = "flextable")
+                           title = "My SI flipper model")
 ```
 
 
-As you can see in Equation.\@ref(eq:binom2)
+As a reminder, we thought about an equation \@ref(eq:binom2). 
 
 \begin{equation} 
   f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
@@ -126,5 +155,4 @@ As you can see in Equation.\@ref(eq:binom2)
 ```{r, child = "appendix.Rmd"}
 
 ```
-
 

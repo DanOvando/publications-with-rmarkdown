@@ -1,9 +1,9 @@
 ---
-title: "Academic Publications with R Markdown"
+title: "Academic Publications with <br> R Markdown"
 subtitle: "eco-data-science session"
 author: "Dan Ovando"
 institute: "University of Washington"
-date: "`r Sys.Date()`"
+date: "2020-11-17 (updated `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css

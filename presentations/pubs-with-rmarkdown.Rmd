@@ -166,7 +166,20 @@ Your .bib file has entries for each potential citation containing all the inform
 ## Importing References
 
 ```
-example .bib entry
+@article{keum2001,
+  title = {Fat Penguins and Imaginary Penguins in Perturbative {{QCD}}},
+  author = {Keum, Yong-Yeon and Li, Hsiang-nan and Sanda, A. I.},
+  year = {2001},
+  month = apr,
+  volume = {504},
+  pages = {6--14},
+  issn = {0370-2693},
+  doi = {10.1016/S0370-2693(01)00247-7},
+  file = {/Users/danovan/Google Drive/references/Keum et al. - 2001 - Fat penguins and imaginary penguins in perturbativ.pdf;/Users/danovan/Zotero/storage/4UI4382Z/S0370269301002477.html},
+  journal = {Physics Letters B},
+  language = {en},
+  number = {1}
+}
 ```
 
 ---
@@ -204,6 +217,28 @@ I have mine set as lowercase first author last name followed by date, with lette
 But, this could be uppercase first author last name followed by date, title then date, whatever. So, if multiple authors are contributing to the .bib make sure that this is consistent, and remember that if you change settings and re-export your .bib things might break. 
 
 
+---
+
+# Citations
+
+To use your bibliography, just load the .bib in the YAML, and specify a citation style using a .csl file
+
+You can download just about any csl file from zotero [here](https://www.zotero.org/styles)
+
+```yaml
+---
+title: "My Excellent Research"
+author: Dan Ovando
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    includes: 
+      in_header: "my-pub-header.tex"
+linkcolor: blue
+bibliography: pubs-in-rmarkdown.bib
+csl: fish-and-fisheries.csl
+---
+```
 ---
 
 # Citations
